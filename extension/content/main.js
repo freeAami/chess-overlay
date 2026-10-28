@@ -11,7 +11,7 @@
 
   const overlay = new CoOverlay();
   let settings = { ...DEFAULTS };
-  let bridgeFen = null, bridgeAt = 0;
+  let bridgeFen = null;
   let pos = null;
   let lastKey = null;
   let reqId = 0;
@@ -21,7 +21,6 @@
   window.addEventListener("message", (e) => {
     if (e.source !== window || !e.data || e.data.source !== "chess-overlay-bridge") return;
     bridgeFen = e.data.fen;
-    bridgeAt = Date.now();
   });
 
   function analyzeSide() {
@@ -80,8 +79,7 @@
   }
 
   function tick() {
-    const fresh = Date.now() - bridgeAt < 3000 ? bridgeFen : null;
-    const p = coReadPosition(site, fresh);
+    const p = coReadPosition(site, bridgeFen);
     if (!p) {
       if (pos && !coBoardElement(site)) { pos = null; lastKey = null; result = null; overlay.clear(); overlay.detach(); }
       return;

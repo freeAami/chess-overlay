@@ -2,7 +2,7 @@
 // a game API with an exact FEN (side to move, castling rights, en passant).
 // We forward it to the isolated-world content script via postMessage.
 (() => {
-  let last = null;
+  let last = null, lastAt = 0;
   function tick() {
     try {
       const b = document.querySelector("wc-chess-board, chess-board");
@@ -12,8 +12,9 @@
       let playingAs = null;
       try { playingAs = typeof g.getPlayingAs === "function" ? g.getPlayingAs() : null; } catch (_) {}
       const key = fen + "|" + playingAs;
-      if (key === last) return;
-      last = key;
+      const now = Date.now();
+      if (key === last && now - lastAt < 2000) return;
+      last = key; lastAt = now;
       window.postMessage({ source: "chess-overlay-bridge", fen, playingAs }, "*");
     } catch (_) {}
   }
