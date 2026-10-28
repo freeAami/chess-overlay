@@ -4,6 +4,15 @@ Watches a chess board on your screen (Chess.com / Lichess in a browser), recogni
 the position, asks Stockfish for the best move and draws it as an arrow directly
 over the board in a transparent, click-through window.
 
+## Browser extension (recommended)
+
+The `extension/` folder contains a Chrome extension that does the same job without screen capture:
+it reads the position from the Lichess / Chess.com page, runs Stockfish (WASM) in the browser and
+draws the arrow on the board, with a popup UI for all settings. See [extension/README.md](extension/README.md).
+
+The Python app below is the screen-capture version (works with any window, needs calibration).
+
+
 > **Fair play.** Using engine assistance in rated/online games against humans
 > violates the Chess.com and Lichess terms of service and gets accounts banned.
 > Use this for analysing positions, studying, or playing against bots.

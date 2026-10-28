@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Chess Overlay – Stockfish Arrows",
+  "version": "0.2.0",
+  "description": "Reads the board on Lichess / Chess.com, runs Stockfish in your browser and draws the best move as an arrow. For analysis and games vs bots.",
+  "permissions": ["storage", "offscreen"],
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Chess Overlay",
+    "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" }
+  },
+  "icons": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "content_scripts": [
+    {
+      "matches": ["*://lichess.org/*", "*://*.lichess.org/*", "*://*.chess.com/*"],
+      "js": ["content/reader.js", "content/overlay.js", "content/main.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.chess.com/*"],
+      "js": ["content/bridge.js"],
+      "world": "MAIN",
+      "run_at": "document_idle"
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  }
+}
