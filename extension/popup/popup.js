@@ -37,7 +37,7 @@ async function activeTab() {
 async function pollStatus() {
   const tab = await activeTab();
   let st = null;
-  if (tab && /lichess\.org|chess\.com/.test(tab.url || "")) {
+  if (tab) {
     try { st = await chrome.tabs.sendMessage(tab.id, { type: "get-status" }); } catch (_) { st = null; }
   }
   const site = $("site"), best = $("bestMove"), hint = $("hint");
@@ -46,9 +46,7 @@ async function pollStatus() {
     best.textContent = "—"; best.classList.add("pending");
     $("evalText").textContent = ""; $("depthText").textContent = ""; $("turnText").textContent = "";
     $("evalFill").style.width = "50%";
-    hint.textContent = tab && /lichess\.org|chess\.com/.test(tab.url || "")
-      ? "Board not detected yet — reload the page if this persists."
-      : "Open a game or analysis board on Lichess or Chess.com.";
+    hint.textContent = "Open a game or analysis board on Lichess or Chess.com (reload the page if one is already open).";
     return;
   }
   site.textContent = (st.site === "lichess" ? "Lichess" : "Chess.com") + (st.found ? " · board found" : " · no board");
